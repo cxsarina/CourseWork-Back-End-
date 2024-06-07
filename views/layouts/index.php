@@ -1,6 +1,8 @@
 <?php
 /** @var string $Title*/
 /** @var string $Content*/
+if(empty($Title))
+    $Title = '';
 ?>
 <!doctype html>
 <html lang="en">

@@ -18,7 +18,8 @@ class Router
         }
         if(count($parts) == 1)
             $parts[1] = 'index';
-
+        \core\Core::get()->moduleName = $parts[0];
+        \core\Core::get()->actionName = $parts[1];
         $controller = 'controllers\\'.ucfirst($parts[0]).'Controller';
         $method = 'action'.ucfirst($parts[1]);
         if(class_exists($controller)){

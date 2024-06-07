@@ -9,8 +9,7 @@ if(isset($_GET['route']))
     $route = $_GET['route'];
 else
     $route = '';
-$core = new core\Core($route);
-$core->run();
+
+$core = \core\Core::get();
+$core->run($route);
 $core->done();
-
-
