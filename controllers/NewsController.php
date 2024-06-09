@@ -17,7 +17,7 @@ class NewsController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('views/news/view.php');
+        return $this->render();
     }
 
     public function actionView($params)
