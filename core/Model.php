@@ -2,6 +2,8 @@
 
 namespace core;
 
+use models\Guitars;
+
 class Model
 {
     protected $fieldsArray;
@@ -42,6 +44,30 @@ class Model
             return $arr;
         else
             return null;
+    }
+    public static function findCountries($category) :array
+    {
+        $tableName = '\\models\\'.ucfirst(static::$tableName);
+        $table = new $tableName();
+        $array = $table->findByCondition(['category' => $category]);
+        $countries = [];
+        foreach ($array as $arr) {
+            $countries [] = $arr['country'];
+        }
+        $countries = array_unique($countries);
+        return $countries;
+    }
+    public static function findBrands($category) :array
+    {
+        $tableName = '\\models\\'.ucfirst(static::$tableName);
+        $table = new $tableName();
+        $array = $table->findByCondition(['category' => $category]);
+        $brands = [];
+        foreach ($array as $arr) {
+            $brands [] = $arr['brand'];
+        }
+        $brands = array_unique($brands);
+        return $brands;
     }
     public function save()
     {
