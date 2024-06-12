@@ -11,6 +11,7 @@ use core\Model;
  * @property string $price Ціна
  * @property string $description Опис
  * @property string $count Кількість
+ * @property string $image Фото товару
  * @property int $id ID
  */
 class Audio extends Model

@@ -69,6 +69,14 @@ class Model
         $brands = array_unique($brands);
         return $brands;
     }
+    public static function getImage($model)
+    {
+        $image = $model['image'];
+        if (!empty($image))
+            return base64_encode($image);
+        else
+            return null;
+    }
     public function save()
     {
         $isInsert= false;

@@ -55,13 +55,16 @@ if (empty($keyssarray))
     <div class="row">
         <?php foreach ($keyssarray as $keyss) { ?>
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="<?= $keyss['image'] . '.jpg' ?>" class="card-img-top" alt="Класична гітара">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $keyss['brand'] . ' ' . $keyss['model'] ?></h5>
-                        <p class="card-text"><?= $keyss['price'] . ' грн' ?></p>
+                <a style="text-decoration: none; color: inherit;" href="/keyss/view/<?= $keyss['id'] ?>">
+                    <div class="card mb-4">
+                        <img src="data:image/jpg;base64,<?= \core\Model::getImage($keyss) ?>" class="card-img-top"
+                             alt="">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $keyss['brand'] . ' ' . $keyss['model'] ?></h5>
+                            <p class="card-text"><?= $keyss['price'] . ' грн' ?></p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         <?php } ?>
     </div>

@@ -55,13 +55,16 @@ if (empty($guitarsarray))
     <div class="row">
         <?php foreach ($guitarsarray as $guitar) { ?>
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="<?= $guitar['image'] . '.jpg' ?>" class="card-img-top" alt="Класична гітара">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $guitar['brand'] . ' ' . $guitar['model'] ?></h5>
-                        <p class="card-text"><?= $guitar['price'] . ' грн' ?></p>
+                <a style="text-decoration: none; color: inherit;" href="/guitars/view/<?= $guitar['id'] ?>">
+                    <div class="card mb-4">
+                        <img src="data:image/jpg;base64,<?= \core\Model::getImage($guitar) ?>" class="card-img-top"
+                             alt="">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $guitar['brand'] . ' ' . $guitar['model'] ?></h5>
+                            <p class="card-text"><?= $guitar['price'] . ' грн' ?></p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         <?php } ?>
     </div>

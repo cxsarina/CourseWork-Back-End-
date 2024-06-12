@@ -17,6 +17,9 @@ class NewsController extends Controller
 
     public function actionIndex()
     {
+        $news = new News();
+        $newsarray = $news->findByCondition(null);
+        $this->template->setParam('newsarray' , $newsarray);
         return $this->render();
     }
 

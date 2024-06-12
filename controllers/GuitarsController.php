@@ -12,6 +12,12 @@ class GuitarsController extends Controller
     {
         return $this->render();
     }
+    public function actionView($params): array
+    {
+        $guitar = Guitars::findById($params[0]);
+        $this->template->setParam('model',$guitar);
+        return $this->render('views/layouts/view.php');
+    }
 
     public function actionAccessories(): array
     {

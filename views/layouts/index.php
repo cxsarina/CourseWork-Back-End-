@@ -9,6 +9,16 @@ if (empty($Title))
     $Title = '';
 if (empty($Content))
     $Content = '';
+$icons = ['/images/note1.png', '/images/note2.png', '/images/note3.png'];
+
+$icon_positions = [];
+for ($i = 0; $i < 60; $i++) {
+    $icon_positions[] = [
+        'icon' => $icons[array_rand($icons)],
+        'top' => rand(0, 90),
+        'left' => rand(0, 90)
+    ];
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,8 +35,58 @@ if (empty($Content))
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+    <style>
+        .background-icons {
+            position: absolute;
+            width: 100%;
+            height: 120%;
+            z-index: -1;
+        }
+
+        .background-icons img {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            opacity: 0.2;
+        }
+        .container{
+            font-family: "Comic Sans MS";
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const icons = document.querySelectorAll(".background-icons img");
+            icons.forEach(icon => {
+                let overlapping = true;
+                while (overlapping) {
+                    overlapping = false;
+                    const top = Math.random() * 90 + "%";
+                    const left = Math.random() * 90 + "%";
+                    icon.style.top = top;
+                    icon.style.left = left;
+                    for (let otherIcon of icons) {
+                        if (otherIcon !== icon && isOverlapping(icon, otherIcon)) {
+                            overlapping = true;
+                            break;
+                        }
+                    }
+                }
+            });
+
+            function isOverlapping(icon1, icon2) {
+                const rect1 = icon1.getBoundingClientRect();
+                const rect2 = icon2.getBoundingClientRect();
+                return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
+            }
+        });
+    </script>
 </head>
 <body>
+<div class="background-icons">
+    <?php foreach ($icon_positions as $pos) { ?>
+        <img src="<?= $pos['icon'] ?>" style="top: <?= $pos['top'] ?>%; left: <?= $pos['left'] ?>%;">
+    <?php } ?>
+</div>
 <div class="container">
     <header class="p-3 mb-3 border-bottom">
         <div class="container">
@@ -37,10 +97,10 @@ if (empty($Content))
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 link-secondary">ГОЛОВНА</a></li>
                     <li><a href="/news/index" class="nav-link px-2 link-body-emphasis">НОВИНИ</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
-                    <?php if(!Users::IsUserLogged()) : ?>
+                    <?php if (!Users::IsUserLogged()) : ?>
                         <li><a href="/users/login" class="nav-link px-2 link-body-emphasis">УВІЙТИ</a></li>
-                    <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">ЗАРЕЄСТРУВАТИСЯ</a></li>
+                        <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">ЗАРЕЄСТРУВАТИСЯ</a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -60,7 +120,7 @@ if (empty($Content))
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/users/logout" >Вихід</a></li>
+                            <li><a class="dropdown-item" href="/users/logout">Вихід</a></li>
                         </ul>
                     </div>
                 <?php endif; ?>
@@ -79,20 +139,21 @@ if (empty($Content))
                             <li><a class="dropdown-item" href="/guitars/classic">КЛАСИЧНІ ГІТАРИ</a></li>
                             <li><a class="dropdown-item" href="/guitars/electric">ЕЛЕКТРО ГІТАРИ</a></li>
                             <li><a class="dropdown-item" href="/guitars/acoustic">АКУСТИЧНІ ГІТАРИ</a></li>
-                            <li><a class="dropdown-item" href="/guitars/electroacoustic">ЕЛЕКТРО-АКУСТИЧНІ ГІТАРИ</a></li>
+                            <li><a class="dropdown-item" href="/guitars/electroacoustic">ЕЛЕКТРО-АКУСТИЧНІ
+                                    ГІТАРИ</a></li>
                             <li><a class="dropdown-item" href="/guitars/accessories">АКСЕСУАРИ</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="/keys/index" role="button">
+                        <a class="nav-link" href="/keyss/index" role="button">
                             КЛАВІШНІ
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/keys/synthesizers">СИНТЕЗАТОРИ</a></li>
-                            <li><a class="dropdown-item" href="/keys/grandpiano">РОЯЛІ</a></li>
-                            <li><a class="dropdown-item" href="/keys/piano">ПІАНІНО</a></li>
-                            <li><a class="dropdown-item" href="/keys/digitalpiano">ЦИФРОВЕ ПІАНІНО</a></li>
-                            <li><a class="dropdown-item" href="/keys/accessories">АКСЕСУАРИ</a></li>
+                            <li><a class="dropdown-item" href="/keyss/synthesizers">СИНТЕЗАТОРИ</a></li>
+                            <li><a class="dropdown-item" href="/keyss/grandpiano">РОЯЛІ</a></li>
+                            <li><a class="dropdown-item" href="/keyss/piano">ПІАНІНО</a></li>
+                            <li><a class="dropdown-item" href="/keyss/digitalpiano">ЦИФРОВЕ ПІАНІНО</a></li>
+                            <li><a class="dropdown-item" href="/keyss/accessories">АКСЕСУАРИ</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -137,13 +198,9 @@ if (empty($Content))
                             <li><a class="dropdown-item" href="/audio/loudspeakers">ГУЧНОМОВЦІ</a></li>
                             <li><a class="dropdown-item" href="/audio/subwoofers">САБВУФЕРИ</a></li>
                             <li><a class="dropdown-item" href="/audio/poweramps">ПІДСИЛЮВАЧІ ПОТУЖНОСТІ</a></li>
-                            <li><a class="dropdown-item" href="/audio/accessories">АКСЕСУАРИ ДЛЯ ЗВУКОВОГО ОБЛАДНАННЯ</a></li>
+                            <li><a class="dropdown-item" href="/audio/accessories">АКСЕСУАРИ ДЛЯ ЗВУКОВОГО
+                                    ОБЛАДНАННЯ</a></li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="" role="button" aria-expanded="false">
-                            УСІ
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -155,14 +212,10 @@ if (empty($Content))
     </div>
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
         </ul>
-        <p class="text-center text-body-secondary">© 2024 Company, Inc</p>
+        <p class="text-center text-body-secondary">© 2024 Shkolna Aryna, Inc</p>
     </footer>
 </div>
+
 </body>
 </html>

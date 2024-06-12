@@ -12,13 +12,11 @@ $this->Title = 'Гітари';
     }
     .card-img-top {
         object-fit: cover;
-        height: 300px; /* Висота зображення */
-        width: 100%; /* Ширина зображення */
+        height: 300px;
+        width: 100%;
     }
-
-
     .custom-card {
-        margin: 0 10px; /* Відступ між останніми двома картами */
+        margin: 0 10px;
     }
 </style>
 <div class="row">

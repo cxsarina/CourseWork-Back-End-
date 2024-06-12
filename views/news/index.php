@@ -1,11 +1,23 @@
 <?php
 $this->Title = 'Список новин';
+if (empty($newsarray))
+    $newsarray = [];
 ?>
-<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+<div class="content">
+    <div class="row">
+        <?php foreach ($newsarray as $news) { ?>
+            <div class="col-md-4">
+                <a style="text-decoration: none; color: inherit;" href="/news/view/<?= $news['id'] ?>">
+                    <div class="card mb-4 h-100">
+                        <img src="data:image/jpg;base64,<?= \core\Model::getImage($news) ?>" class="card-img-top"alt="...">
+                        <div class="card-body">
+                            <p class="card-text"><?= \models\News::getDate($news) ?></p>
+                            <h5 class="card-title"><?= $news['title'] ?></h5>
+                            <p class="card-text"><?= $news['short_text'] ?></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <?php } ?>
     </div>
 </div>
