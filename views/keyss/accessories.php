@@ -6,27 +6,7 @@ $this->Title = 'Аксесуари для клавішних інструмен�
 if (empty($keyssarray))
     $keyssarray = [];
 ?>
-<style>
-    .sidebar {
-        position: absolute;
-        top: 220px;
-        width: 250px;
-        background-color: #f8f9fa;
-        border-right: 1px solid #dee2e6;
-        border-left: 1px solid #dee2e6;
-        padding-top: 20px;
-    }
-
-    .content {
-        margin-left: 250px;
-        padding: 20px;
-        flex: 1;
-    }
-
-    .sidebar {
-        padding-left: 5px;
-    }
-</style>
+<link href="/css/viewsstyle.css" rel="stylesheet"/>
 <div class="sidebar">
     <h5 class="text-center">Фільтри</h5>
     <form method="post" action="">
@@ -47,7 +27,12 @@ if (empty($keyssarray))
         <?php foreach ($keyssarray as $keyss) { ?>
             <div class="col-md-4">
                 <a style="text-decoration: none; color: inherit;" href="/keyss/view/<?= $keyss['id'] ?>">
-                    <div class="card mb-4">
+                    <div class="card mb-4 h-100">
+                        <?php if ($keyss['count'] > 0) : ?>
+                            <p style="color: #28a745">♥ В наявності</p>
+                        <?php else : ?>
+                            <p style="color: #e12b2b">♥ Немає в наявності</p>
+                        <?php endif; ?>
                         <img src="data:image/jpg;base64,<?= \core\Model::getImage($keyss) ?>" class="card-img-top"
                              alt="">
                         <div class="card-body">

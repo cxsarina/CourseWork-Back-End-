@@ -38,6 +38,11 @@ class Users extends Model
     {
         return !empty(Core::get()->session->get('user'));
     }
+    public static function IsUserAdmin()
+    {
+        $user = Core::get()->session->get('user');
+        return $user['role'] === 'admin';
+    }
 
     public static function LoginUser($user)
     {
@@ -56,5 +61,12 @@ class Users extends Model
         $user->firstname = $firstname;
         $user->lastname = $lastname;
         $user->save();
+    }
+    public static function getInitials($user): string
+    {
+        $firstname = $user['firstname'];
+        $firstname = str_split($firstname, 1);
+        $lastname = str_split($user['lastname'], 1);
+        return strtoupper($firstname[0] . $lastname[0]);
     }
 }

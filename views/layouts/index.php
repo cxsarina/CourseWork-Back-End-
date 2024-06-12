@@ -3,6 +3,7 @@
 
 /** @var string $Content */
 
+use core\Core;
 use models\Users;
 
 if (empty($Title))
@@ -39,7 +40,6 @@ for ($i = 0; $i < 60; $i++) {
         .background-icons {
             position: absolute;
             width: 100%;
-            height: 120%;
             z-index: -1;
         }
 
@@ -49,13 +49,39 @@ for ($i = 0; $i < 60; $i++) {
             height: 70px;
             opacity: 0.2;
         }
-        .container{
+
+        .container {
             font-family: "Comic Sans MS";
+        }
+
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            font-family: "Arial";
+        }
+
+        .dropdown-toggle::after {
+            margin-top: 15px;
+        }
+
+        .cart-btn {
+            margin-right: 10px;
         }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const iconsContainer = document.querySelector('.background-icons');
             const icons = document.querySelectorAll(".background-icons img");
+
+            iconsContainer.style.height = document.documentElement.scrollHeight + 'px';
+
             icons.forEach(icon => {
                 let overlapping = true;
                 while (overlapping) {
@@ -103,23 +129,30 @@ for ($i = 0; $i < 60; $i++) {
                         </li>
                     <?php endif; ?>
                 </ul>
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                </form>
-                <?php if (Users::IsUserLogged()) : ?>
+                <?php if (Users::IsUserLogged()) :
+                    $user = Core::get()->session->get('user');
+                    $userInitials = Users::getInitials($user); ?>
+                    <a href="/site/cart">
+                        <button type="button" class="btn btn-outline-dark cart-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-cart4" viewBox="0 0 16 16">
+                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"></path>
+                            </svg>
+                        </button>
+                    </a>
                     <div class="dropdown text-end">
-                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                        <a href="#" class="d-flex link-body-emphasis text-decoration-none dropdown-toggle"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
-                                 class="rounded-circle">
+                            <div id="avatar-container"></div>
                         </a>
                         <ul class="dropdown-menu text-small">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            <?php if (Users::IsUserAdmin()) : ?>
+                                <li><a class="dropdown-item" href="/news/add">Додати новину</a></li>
+                                <li><a class="dropdown-item" href="/site/addproduct">Додати товар</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            <?php endif; ?>
                             <li><a class="dropdown-item" href="/users/logout">Вихід</a></li>
                         </ul>
                     </div>
@@ -216,6 +249,26 @@ for ($i = 0; $i < 60; $i++) {
         <p class="text-center text-body-secondary">© 2024 Shkolna Aryna, Inc</p>
     </footer>
 </div>
-
 </body>
+<script>
+    const userInitials = "<?php echo $userInitials; ?>";
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function createAvatar(initials) {
+        const avatar = document.getElementById('avatar-container');
+        avatar.className = 'avatar';
+        avatar.style.backgroundColor = getRandomColor();
+        avatar.textContent = initials;
+    }
+
+    createAvatar(userInitials);
+</script>
 </html>

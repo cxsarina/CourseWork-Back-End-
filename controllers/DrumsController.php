@@ -11,10 +11,36 @@ class DrumsController extends Controller
     {
         return $this->render();
     }
+    public function actionUpdate($params)
+    {
+        if($this->isPost){
+            if($this->post->action === 'save'){
+                Drums::saveProduct($this->post->productId,'Guitars',$this->post->category,
+                    $this->post->brand,$this->post->model,$this->post->country,$this->post->count,
+                    $this->post->price,$this->post->description,$this->post->image);
+                return $this->redirect('site/updatesuccess');
+            }
+            else if ($this->post->action === 'delete'){
+                Drums::deleteById($this->post->productId);
+                return $this->redirect('site/deletesuccess');
+            }
+        }
+        $drums = Drums::findById($params[0]);
+        $this->template->setParam('model',$drums);
+        return $this->render('views/site/update.php');
+    }
     public function actionView($params): array
     {
         $drums = Drums::findById($params[0]);
         $this->template->setParam('model',$drums);
+        if($this->isPost){
+            if($this->post->action === 'update'){
+                return $this->redirect('/drums/update/'.$this->post->productId);
+            }
+            else if ($this->post->action === 'addtocart'){
+
+            }
+        }
         return $this->render('views/layouts/view.php');
     }
 

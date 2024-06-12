@@ -6,45 +6,7 @@ $this->Title = 'Аксесуари для звукового обладнанн�
 if (empty($audioarray))
     $audioarray = [];
 ?>
-<style>
-    .sidebar {
-        position: absolute;
-        top: 220px;
-        width: 250px;
-        background-color: #f8f9fa;
-        border-right: 1px solid #dee2e6;
-        border-left: 1px solid #dee2e6;
-        padding-top: 20px;
-    }
-
-    .content {
-        margin-left: 250px;
-        padding: 20px;
-        flex: 1;
-    }
-
-    .sidebar {
-        padding-left: 5px;
-    }
-
-    .card {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .card-img-top {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-    }
-
-    .col-md-4 {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-</style>
+<link href="/css/viewsstyle.css" rel="stylesheet"/>
 <div class="sidebar">
     <h5 class="text-center">Фільтри</h5>
     <form method="post" action="">
@@ -64,18 +26,23 @@ if (empty($audioarray))
     <div class="row">
         <?php foreach ($audioarray as $audio) { ?>
             <div class="col-md-4">
-                <a style="text-decoration: none; color: inherit;" href="/audio/view/<?= $audio['id'] ?>">
-                    <div class="card mb-4">
-                        <img src="data:image/jpg;base64,<?= \core\Model::getImage($audio) ?>" class="card-img-top"
-                             alt="">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $audio['brand'] . ' ' . $audio['model'] ?></h5>
-                            <p class="card-text"><?= $audio['price'] . ' грн' ?></p>
-                        </div>
-                    </div>
+        <a style="text-decoration: none; color: inherit;" href="/audio/view/<?= $audio['id'] ?>">
+            <div class="card mb-4 h-100">
+            <?php if ($audio['count'] > 0) : ?>
+                <p style="color: #28a745">♥ В наявності</p>
+                <?php else : ?>
+                    <p style="color: #e12b2b">♥ Немає в наявності</p>
+                <?php endif; ?>
+                <img src="data:image/jpg;base64,<?= \core\Model::getImage($audio) ?>" class="card-img-top"
+                     alt="">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $audio['brand'] . ' ' . $audio['model'] ?></h5>
+                    <p class="card-text"><?= $audio['price'] . ' грн' ?></p>
+                </div>
+                </div>
                 </a>
-            </div>
-        <?php } ?>
+                </div>
+                <?php } ?>
     </div>
 </div>
 

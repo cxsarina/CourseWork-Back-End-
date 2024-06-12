@@ -1,19 +1,32 @@
 <?php
+/** @var string $error_message Повідомлення про помилку */
 $this->Title = 'Додавання новини';
 ?>
-<form>
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+<form method="post" action="" enctype="multipart/form-data">
+    <?php
+    if (!empty($error_message)) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?= $error_message ?>
+        </div>
+    <?php endif; ?>
+    <div>
+        <div class="mb-3">
+            <label for="InputTitle" class="form-label">Заголовок</label>
+            <input value="<?=$this->controller->post->title ?>" name="title" type="text" class="form-control" id="InputTitle">
+        </div>
+        <div class="mb-3">
+            <label for="InputText" class="form-label">Текст новини</label>
+            <input value="<?=$this->controller->post->text ?>" name="text" type="text" class="form-control" id="InputText">
+        </div>
+        <div class="mb-3">
+            <label for="InputShortText" class="form-label">Короткий текст новини</label>
+            <input value="<?=$this->controller->post->shorttext ?>"  name="shorttext" type="text" class="form-control" id="InputShortText">
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Завантажити файл:</label>
+            <input id="file" value="<?= $this->controller->files->image ?>" type="file" class="form-control" name="image" required>
+        </div>
+        <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s')?>">
+        <button type="submit" class="btn btn-primary">Додати</button>
     </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
 </form>

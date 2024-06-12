@@ -11,10 +11,36 @@ class WindsController extends Controller
     {
         return $this->render();
     }
+    public function actionUpdate($params)
+    {
+        if($this->isPost){
+            if($this->post->action === 'save'){
+                Winds::saveProduct($this->post->productId,'Guitars',$this->post->category,
+                    $this->post->brand,$this->post->model,$this->post->country,$this->post->count,
+                    $this->post->price,$this->post->description,$this->post->image);
+                return $this->redirect('site/updatesuccess');
+            }
+            else if ($this->post->action === 'delete'){
+                Winds::deleteById($this->post->productId);
+                return $this->redirect('site/deletesuccess');
+            }
+        }
+        $winds = Winds::findById($params[0]);
+        $this->template->setParam('model',$winds);
+        return $this->render('views/site/update.php');
+    }
     public function actionView($params): array
     {
         $winds = Winds::findById($params[0]);
         $this->template->setParam('model',$winds);
+        if($this->isPost){
+            if($this->post->action === 'update'){
+                return $this->redirect('/winds/update/'.$this->post->productId);
+            }
+            else if ($this->post->action === 'addtocart'){
+
+            }
+        }
         return $this->render('views/layouts/view.php');
     }
 
