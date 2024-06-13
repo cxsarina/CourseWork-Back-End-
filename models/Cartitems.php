@@ -14,4 +14,12 @@ use core\Model;
 class Cartitems extends Model
 {
     public static $tableName = 'cartitems';
+    public static function addToCart($userId, $productId, $productType, $price){
+        $cart = new Cartitems();
+        $cart->user_id = $userId;
+        $cart->product_id = $productId;
+        $cart->product_type = $productType;
+        $cart->price = $price;
+        $cart->saveInsert();
+    }
 }

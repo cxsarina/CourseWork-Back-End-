@@ -3,6 +3,8 @@
 namespace controllers;
 
 use core\Controller;
+use core\Core;
+use models\Cartitems;
 use models\Drums;
 
 class DrumsController extends Controller
@@ -15,14 +17,30 @@ class DrumsController extends Controller
     {
         if($this->isPost){
             if($this->post->action === 'save'){
-                Drums::saveProduct($this->post->productId,'Guitars',$this->post->category,
-                    $this->post->brand,$this->post->model,$this->post->country,$this->post->count,
-                    $this->post->price,$this->post->description,$this->post->image);
-                return $this->redirect('site/updatesuccess');
+                if (strlen($this->post->brand) === 0)
+                    $this->addErrorMessage('Бренд не вказано!');
+                if (strlen($this->post->model) === 0)
+                    $this->addErrorMessage('Модель не вказано!');
+                if (strlen($this->post->count) === 0)
+                    $this->addErrorMessage('Кількість не вказано!');
+                if (strlen($this->post->price) === 0)
+                    $this->addErrorMessage('Ціну не вказано!');
+                if (strlen($this->post->description) === 0)
+                    $this->addErrorMessage('Немає опису!');
+                $image = null;
+                if (!is_null($this->files->image && $this->files->image['error'] === UPLOAD_ERR_OK)) {
+                    $image = $this->files->image;
+                }
+                if(!$this->isErrorMessageExists()) {
+                    Drums::saveProduct($this->post->productId, 'Drums', $this->post->category,
+                        $this->post->brand, $this->post->model, $this->post->country, $this->post->count,
+                        $this->post->price, $this->post->description, $image);
+                    return $this->redirect('/site/updatesuccess');
+                }
             }
             else if ($this->post->action === 'delete'){
                 Drums::deleteById($this->post->productId);
-                return $this->redirect('site/deletesuccess');
+                return $this->redirect('/site/deletesuccess');
             }
         }
         $drums = Drums::findById($params[0]);
@@ -38,7 +56,7 @@ class DrumsController extends Controller
                 return $this->redirect('/drums/update/'.$this->post->productId);
             }
             else if ($this->post->action === 'addtocart'){
-
+                Cartitems::addToCart(Core::get()->session->get('user')['id'],$this->post->productId,'drums',$this->post->price);
             }
         }
         return $this->render('views/layouts/view.php');

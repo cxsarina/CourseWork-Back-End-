@@ -136,12 +136,10 @@ class Model
 
     private static function checkFile($file)
     {
-        $allowedMimeTypes = ['image/jpeg', 'image/png'];
-
+        $allowedMimeTypes = ['image/jpeg', 'image/png','image/jpg'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
-
         return in_array($mimeType, $allowedMimeTypes);
     }
 
@@ -150,6 +148,7 @@ class Model
         $mimeTypeMap = [
             'image/jpeg' => 'jpeg',
             'image/png' => 'png',
+            'image/jpg' => 'jpg'
         ];
 
         return $mimeTypeMap[$mimeType] ?? null;
@@ -157,9 +156,11 @@ class Model
 
     public static function saveProduct($id = null, $tableName, $category = null, $brand, $model, $country = null, $count, $price, $description, $image = null)
     {
+        $isUpdate = false;
         $tablename = '\\models\\' . $tableName;
         if ($id != null) {
             $table = $tablename::createObjById($id);
+            $isUpdate = true;
         } else {
             $table = new  $tablename();
         }
@@ -175,26 +176,29 @@ class Model
         if ($image != null) {
             $table->image = Model::getImageContent($image);
         }
-        $table->save();
+        if($isUpdate){
+            $table->saveUpdate();
+        }
+        else{
+            $table->saveInsert();
+        }
     }
-
-    public function save()
+    public static function countDecrease($id)
     {
-        $isInsert = false;
-        $value = $this->{static::$primaryKey};
-        if (!isset($value))
-            $isInsert = true;
-        else {
-            if (empty($value))
-                $isInsert = true;
-        }
-        if ($isInsert) {
-            Core::get()->db->insert(static::$tableName, $this->fieldsArray);
-        } else {
-            Core::get()->db->update(static::$tableName, $this->fieldsArray,
-                [
-                    static::$primaryKey => $this->{static::$primaryKey}
-                ]);
-        }
+        $tableName = '\\models\\' . ucfirst(static::$tableName);
+        $model = $tableName::createObjById($id);
+        $model->count -= 1;
+        $model->saveUpdate();
+    }
+    public function saveInsert()
+    {
+        Core::get()->db->insert(static::$tableName, $this->fieldsArray);
+    }
+    public function saveUpdate()
+    {
+        Core::get()->db->update(static::$tableName, $this->fieldsArray,
+            [
+                static::$primaryKey => $this->{static::$primaryKey}
+            ]);
     }
 }

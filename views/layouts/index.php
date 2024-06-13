@@ -132,7 +132,7 @@ for ($i = 0; $i < 60; $i++) {
                 <?php if (Users::IsUserLogged()) :
                     $user = Core::get()->session->get('user');
                     $userInitials = Users::getInitials($user); ?>
-                    <a href="/site/cart">
+                    <a href="/cartitems/index">
                         <button type="button" class="btn btn-outline-dark cart-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-cart4" viewBox="0 0 16 16">
@@ -246,7 +246,7 @@ for ($i = 0; $i < 60; $i++) {
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
         </ul>
-        <p class="text-center text-body-secondary">© 2024 Shkolna Aryna, Inc</p>
+        <p class="text-center text-body-secondary">© 2024 Shkolna Aryna</p>
     </footer>
 </div>
 </body>

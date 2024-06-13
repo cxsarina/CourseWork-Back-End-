@@ -3,6 +3,11 @@ $this->Title = 'Список новин';
 if (empty($newsarray))
     $newsarray = [];
 ?>
+<style>
+    .col-md-4{
+        padding: 10px;
+    }
+</style>
 <div class="content">
     <div class="row">
         <?php foreach ($newsarray as $news) { ?>

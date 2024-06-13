@@ -4,7 +4,10 @@ namespace controllers;
 
 use core\Controller;
 use core\Core;
+use Exception;
+use models\Cartitems;
 use models\Guitars;
+use models\Users;
 
 class GuitarsController extends Controller
 {
@@ -12,34 +15,52 @@ class GuitarsController extends Controller
     {
         return $this->render();
     }
+
     public function actionUpdate($params)
     {
-        if($this->isPost){
-            if($this->post->action === 'save'){
-                Guitars::saveProduct($this->post->productId,'Guitars',$this->post->category,
-                    $this->post->brand,$this->post->model,$this->post->country,$this->post->count,
-                    $this->post->price,$this->post->description,$this->post->image);
-                return $this->redirect('/site/updatesuccess');
-            }
-            else if ($this->post->action === 'delete'){
+        if ($this->isPost) {
+            if ($this->post->action === 'save') {
+                if (strlen($this->post->brand) === 0)
+                    $this->addErrorMessage('Бренд не вказано!');
+                if (strlen($this->post->model) === 0)
+                    $this->addErrorMessage('Модель не вказано!');
+                if (strlen($this->post->count) === 0)
+                    $this->addErrorMessage('Кількість не вказано!');
+                if (strlen($this->post->price) === 0)
+                    $this->addErrorMessage('Ціну не вказано!');
+                if (strlen($this->post->description) === 0)
+                    $this->addErrorMessage('Немає опису!');
+                $image = null;
+                if (!is_null($this->files->image) && $this->files->image['error'] === UPLOAD_ERR_OK) {
+                    $image = $this->files->image;
+                }
+                if (!$this->isErrorMessageExists()) {
+                    Guitars::saveProduct($this->post->productId, 'Guitars', $this->post->category,
+                        $this->post->brand, $this->post->model, $this->post->country, $this->post->count,
+                        $this->post->price, $this->post->description, $image);
+                    return $this->redirect('/site/updatesuccess');
+                }
+            } else if ($this->post->action === 'delete') {
                 Guitars::deleteById($this->post->productId);
                 return $this->redirect('/site/deletesuccess');
             }
         }
         $guitar = Guitars::findById($params[0]);
-        $this->template->setParam('model',$guitar);
+        $this->template->setParam('model', $guitar);
         return $this->render('views/site/update.php');
     }
+
     public function actionView($params): array
     {
         $guitar = Guitars::findById($params[0]);
-        $this->template->setParam('model',$guitar);
-        if($this->isPost){
-            if($this->post->action === 'update'){
-                return $this->redirect('/guitars/update/'.$this->post->productId);
+        $this->template->setParam('model', $guitar);
+        if ($this->isPost) {
+            if ($this->post->action === 'update') {
+                return $this->redirect('/guitars/update/' . $this->post->productId);
             }
-            else if ($this->post->action === 'addtocart'){
-
+            if (Users::IsUserLogged()) {
+                if ($this->post->action === 'addtocart')
+                    Cartitems::addToCart(Core::get()->session->get('user')['id'], $this->post->productId, 'guitars', $this->post->price);
             }
         }
         return $this->render('views/layouts/view.php');

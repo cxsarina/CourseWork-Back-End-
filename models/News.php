@@ -32,6 +32,6 @@ class News extends Model
         $news->short_text = $shorttext;
         $news->date = $date;
         $news->image = Model::getImageContent($image);
-        $news->save();
+        $news->saveInsert();
     }
 }

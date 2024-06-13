@@ -10,6 +10,7 @@ use core\Model;
  * @property string $password Пароль користувача
  * @property string $firstname Ім'я користувача
  * @property string $lastname Прізвище користувача
+ * @property string $role Роль користувача
  * @property int $id ID користувача
  */
 class Users extends Model
@@ -60,7 +61,7 @@ class Users extends Model
         $user->password = $password;
         $user->firstname = $firstname;
         $user->lastname = $lastname;
-        $user->save();
+        $user->saveInsert();
     }
     public static function getInitials($user): string
     {
