@@ -41,6 +41,7 @@ class SiteController extends Controller
                 Model::saveProduct(null,$this->post->table, $this->post->category, $this->post->brand, $this->post->model, $country, $this->post->count, $this->post->price, $this->post->description, $this->files->image);
                 return $this->redirect('/site/addsuccess');
             }
+            return $this->render('views/site/add.php');
         } else
             return $this->render('views/site/add.php');
     }
@@ -59,6 +60,10 @@ class SiteController extends Controller
         return $this->render();
     }
     public function actionCart()
+    {
+        return $this->render();
+    }
+    public function actionSearch()
     {
         return $this->render();
     }

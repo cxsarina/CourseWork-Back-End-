@@ -19,14 +19,15 @@ class NewsController extends Controller
                 $this->addErrorMessage('Текст новини не вказано!');
             if (strlen($this->post->shorttext) === 0)
                 $this->addErrorMessage('Короткий текст новини не вказано!');
-            if (!is_null($this->files->image && $this->files->image['error'] === UPLOAD_ERR_OK) && !$this->isErrorMessageExists()) {
+            if (!is_null($this->files->image) && $this->files->image['error'] === UPLOAD_ERR_OK && !$this->isErrorMessageExists()) {
                 try {
                     News::AddNews($this->post->title, $this->post->text, $this->post->shorttext, $this->post->date, $this->files->image);
                     return $this->redirect('/news/addsuccess');
                 } catch (\Exception $e) {
                     $this->addErrorMessage("Не вдалося завантажити фото профілю: " . $e->getMessage());
                 }
-            }
+            }else return $this->render();
+
         } else
             return $this->render();
     }

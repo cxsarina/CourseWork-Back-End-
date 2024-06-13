@@ -52,11 +52,11 @@ $this->Title = 'Додавання товару';
         </div>
         <div class="mb-3">
             <label for="InputDescription" class="form-label">Опис</label>
-            <textarea id="InputDescription" name="description" class="form-control" rows="6" required></textarea>
+            <textarea id="InputDescription" name="description" class="form-control" rows="6" ></textarea>
         </div>
         <div class="mb-3">
             <label for="file" class="form-label">Завантажити файл:</label>
-            <input id="file" value="<?= $this->controller->files->image ?>" type="file" class="form-control"
+            <input id="file"  type="file" class="form-control"
                    name="image" required>
         </div>
         <button type="submit" class="btn btn-primary">Додати</button>

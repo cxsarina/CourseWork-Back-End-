@@ -20,6 +20,18 @@ for ($i = 0; $i < 60; $i++) {
         'left' => rand(0, 90)
     ];
 }
+$current_page = $_SERVER['REQUEST_URI'];
+$show_search = true;
+$pages_with_search = [
+    '/news/index',
+    '/news/view',
+];
+foreach ($pages_with_search as $page) {
+    if (strpos($current_page, $page) !== false) {
+        $show_search = false;
+        break;
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -129,6 +141,12 @@ for ($i = 0; $i < 60; $i++) {
                         </li>
                     <?php endif; ?>
                 </ul>
+                <?php if ($show_search): ?>
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" role="search" method="post" action="/site/search/">
+                        <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search" id="search-input" name="searchQuery">
+                        <button type="submit" class="btn btn-outline-dark" style="margin-left: 3px" name="action" value="search">Пошук</button>
+                    </form>
+                <?php endif; ?>
                 <?php if (Users::IsUserLogged()) :
                     $user = Core::get()->session->get('user');
                     $userInitials = Users::getInitials($user); ?>

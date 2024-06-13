@@ -183,6 +183,15 @@ class Model
             $table->saveInsert();
         }
     }
+    public static function searchProductsByBrand($brand)
+    {
+        $db = Core::get()->db;
+        $sql = "SELECT * FROM ".static::$tableName." WHERE brand LIKE :brand";
+        $sth = $db->pdo->prepare($sql);
+        $sth->bindValue(':brand', '%' . $brand . '%', \PDO::PARAM_STR);
+        $sth->execute();
+        return $sth->fetchAll();
+    }
     public static function countDecrease($id)
     {
         $tableName = '\\models\\' . ucfirst(static::$tableName);

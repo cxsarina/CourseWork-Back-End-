@@ -24,7 +24,7 @@ $this->Title = 'Додавання новини';
         </div>
         <div class="mb-3">
             <label for="file" class="form-label">Завантажити файл:</label>
-            <input id="file" value="<?= $this->controller->files->image ?>" type="file" class="form-control" name="image" required>
+            <input id="file" type="file" class="form-control" name="image" required>
         </div>
         <input type="hidden" name="date" value="<?= date('Y-m-d H:i:s')?>">
         <button type="submit" class="btn btn-primary">Додати</button>

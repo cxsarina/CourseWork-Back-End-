@@ -42,7 +42,7 @@ class Router
         http_response_code($code);
         switch ($code){
             case 404:
-                echo '404 Not Found';
+                Core::get()->controllerObject->redirect('/errors/404');
                 break;
         }
     }
